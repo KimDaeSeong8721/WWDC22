@@ -8,106 +8,118 @@ struct ContentView: View {
     
     @State var progress : CGFloat = 0.5
     @State var startAnimation : CGFloat = 0
+    @State var angleMultiplyer : Int = 0
+    @State var earthRotating : Int = 0
 
-    let baseNode = SCNNode()
-    let scene = SCNScene()
-    init(){
-        baseSetting()
-    }
-    
-    func baseSetting(){
-    
-        let sun = createPlanet(radius: 0.25, image: "sun")
-        sun.name = "sun"
-        sun.position = SCNVector3(x:0, y:0, z:0)
-       // rotateObject(rotation: -0.3, planet: sun, duration: 1)
-        
-        let moon = createPlanet(radius: 0.05, image: "moon")
-        let moonRing = createRing(ringSize: 0.2)
-        moon.name = "moon"
-        moon.position = SCNVector3(x:0.2 , y: 0, z: 0)
-        //rotateObject(rotation: 0.5, planet: moon, duration: 0.4)
-        rotateMoon(rotation: 0.5, planet: moonRing, duration: 1)
-        moonRing.position = SCNVector3(x:0.0 , y: 0.02, z: 0)
-        moonRing.addChildNode(moon)
-
-        
-        let earthRing = createRing(ringSize: 0.7)
-        let earth = createPlanet(radius: 0.1, image: "earth")
-        earth.name = "Earth"
-        earth.position = SCNVector3(x:0.7, y: 0, z: 0)
-       // rotateObject(rotation: 0.25, planet: earth, duration: 0.4)
-      //  rotateObject(rotation: 0.25, planet: earthRing, duration: 1)
-
-        earth.addChildNode(moonRing)
-
-        earthRing.addChildNode(earth)
-
-     
-     //   baseNode.addChildNode(moonRing)
-        baseNode.addChildNode(sun)
-        baseNode.addChildNode(earthRing)
-        baseNode.position = SCNVector3(x: 0 ,y: -0.5 ,z: -1)
-        scene.rootNode.addChildNode(baseNode)
-    }
-    
-    func createPlanet(radius: Float, image: String) -> SCNNode{
-        let planet = SCNSphere(radius: CGFloat(radius))
-        let material = SCNMaterial()
-        material.diffuse.contents = UIImage(named: "\(image).jpg")
-        planet.materials = [material]
-    
-        let planetNode = SCNNode(geometry: planet)
-        
-        
-        return planetNode
-    }
-    
-
-  
-    
-    func rotateMoon(rotation: Float, planet: SCNNode, duration: Float){
-//        let rotation = SCNAction.rotateBy(x:0,y:CGFloat(rotation),z:0, duration: TimeInterval(duration))
-        let angle = CGFloat(-90.0 * .pi / 180)
-        let rotation = SCNAction.rotateBy(x: 0, y: angle, z: 0, duration: TimeInterval(duration))
-        planet.runAction(SCNAction.sequence([rotation]))
-        
-        
-    }
-    
-//    func rotateObject(rotation: Float, planet: SCNNode, duration: Float){
-//        let rotation = SCNAction.rotateBy(x:0,y:CGFloat(rotation),z:0, duration: TimeInterval(duration))
-//        planet.runAction(SCNAction.sequence([rotation]))
-//
+//    let baseNode = SCNNode()
+//    let scene = SCNScene()
+//    init(){
+//        baseSetting()
 //    }
     
-    func createRing(ringSize: Float) -> SCNNode {
-        
-        let ring = SCNTorus(ringRadius: CGFloat(ringSize), pipeRadius: 0.002)
-        let material = SCNMaterial()
-        material.diffuse.contents = UIColor.darkGray
-        
-        ring.materials = [material]
-        
-        let ringNode = SCNNode(geometry: ring)
-        
-        return ringNode
-    }
+//    func baseSetting(){
+//
+//        let sun = createPlanet(radius: 0.25, image: "sun")
+//        sun.name = "sun"
+//        sun.position = SCNVector3(x:0, y:0, z:0)
+//       // rotateObject(rotation: -0.3, planet: sun, duration: 1)
+//
+//        let moon = createPlanet(radius: 0.05, image: "moon")
+//        let moonRing = createRing(ringSize: 0.2)
+//        moon.name = "moon"
+//        moon.position = SCNVector3(x:0.2 , y: 0, z: 0)
+//        //rotateObject(rotation: 0.5, planet: moon, duration: 0.4)
+//        rotateMoon(rotation: 0.5, planet: moonRing, duration: 1)
+//        moonRing.position = SCNVector3(x:0.0 , y: 0.02, z: 0)
+//        moonRing.addChildNode(moon)
+//
+//
+//        let earthRing = createRing(ringSize: 0.7)
+//        let earth = createPlanet(radius: 0.1, image: "earth")
+//        earth.name = "Earth"
+//        earth.position = SCNVector3(x:0.7, y: 0, z: 0)
+//       // rotateObject(rotation: 0.25, planet: earth, duration: 0.4)
+//      //  rotateObject(rotation: 0.25, planet: earthRing, duration: 1)
+//
+//        earth.addChildNode(moonRing)
+//
+//        earthRing.addChildNode(earth)
+//
+//
+//     //   baseNode.addChildNode(moonRing)
+//        baseNode.addChildNode(sun)
+//        baseNode.addChildNode(earthRing)
+//        baseNode.position = SCNVector3(x: 0 ,y: -0.5 ,z: -1)
+//        scene.rootNode.addChildNode(baseNode)
+//    }
+//
+//    func createPlanet(radius: Float, image: String) -> SCNNode{
+//        let planet = SCNSphere(radius: CGFloat(radius))
+//        let material = SCNMaterial()
+//        material.diffuse.contents = UIImage(named: "\(image).jpg")
+//        planet.materials = [material]
+//
+//        let planetNode = SCNNode(geometry: planet)
+//
+//
+//        return planetNode
+//    }
+//
+//
+//
+//
+//    func rotateMoon(rotation: Float, planet: SCNNode, duration: Float){
+////        let rotation = SCNAction.rotateBy(x:0,y:CGFloat(rotation),z:0, duration: TimeInterval(duration))
+//        let angle = CGFloat(-90.0 * .pi / 180)
+//        let rotation = SCNAction.rotateBy(x: 0, y: angle, z: 0, duration: TimeInterval(duration))
+//        planet.runAction(SCNAction.sequence([rotation]))
+//
+//
+//    }
+//
+////    func rotateObject(rotation: Float, planet: SCNNode, duration: Float){
+////        let rotation = SCNAction.rotateBy(x:0,y:CGFloat(rotation),z:0, duration: TimeInterval(duration))
+////        planet.runAction(SCNAction.sequence([rotation]))
+////
+////    }
+//
+//    func createRing(ringSize: Float) -> SCNNode {
+//
+//        let ring = SCNTorus(ringRadius: CGFloat(ringSize), pipeRadius: 0.002)
+//        let material = SCNMaterial()
+//        material.diffuse.contents = UIColor.darkGray
+//
+//        ring.materials = [material]
+//
+//        let ringNode = SCNNode(geometry: ring)
+//
+//        return ringNode
+//    }
     var body: some View {
         
         NavigationView {
                 
-            VStack{
+            VStack(spacing:10){
                 
                 Button {
-                  //  rotateMoon(rotation: 0.5, planet: moonRing, duration: 1)
+                    earthRotating = (earthRotating) % 4 + 1
+                   
+                } label: {
+                    Text("지구이동시키기")
+                }
+                Button {
+                   
+                    angleMultiplyer = (angleMultiplyer) % 4 + 1
+                    progress = angleMultiplyer % 2 == 0 ? progress + 0.1 : progress - 0.1
+                   
                 } label: {
                     Text("달이동시키기")
                 }
 
-                
-                SceneView(scene: scene,options: [.autoenablesDefaultLighting, .allowsCameraControl])
+                SceneKitView(angleMultiplyer: $angleMultiplyer,earthRotating : $earthRotating )
                     .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height/2)
+                
+
             }
             // 지구 태양 달 
             
