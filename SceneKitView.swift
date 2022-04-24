@@ -14,24 +14,26 @@ struct SceneKitView: UIViewRepresentable {
 
   @Binding var angleMultiplyer: Int
     @Binding var earthRotating : Int
+    @Binding var isMoonStopped : IsMoonStopped
   let baseNode: SCNNode
   let sceneView : SCNView
-   // let moonRing : SCNNode?
     
-    init(angleMultiplyer: Binding<Int>,earthRotating: Binding<Int>) {
+    init(angleMultiplyer: Binding<Int>,earthRotating: Binding<Int>, isMoonStopped : Binding<IsMoonStopped>) {
       print("초기화")
       
       
       self.baseNode = SCNNode()
       self.sceneView = SCNView()
-      //baseSetting()
     self._angleMultiplyer = angleMultiplyer
     self._earthRotating = earthRotating
+        self._isMoonStopped = isMoonStopped
 
   }
 
-    func baseSetting(angleMultiplyer : Int){
+    func baseSetting(angleMultiplyer : Int, earthRotating : Int){
     
+        print("angleMultiplyer \(angleMultiplyer)")
+        print("earthRotating \(earthRotating)")
 
         // Sun initial
         let sun = createPlanet(radius: 0.25, image: "sun")
@@ -44,23 +46,57 @@ struct SceneKitView: UIViewRepresentable {
         moon.name = "moon"
         moon.position = SCNVector3(x:angleMultiplyer % 2 == 0 ? 0.2 : -0.2 , y: 0, z: 0)
 
-        
-        rotateMoon(rotation: .pi*0.5,planet: moonRing, duration: 1)
         moonRing.position = SCNVector3(x:0.0 , y: 0.02, z: 0)
-        moonRing.rotation = SCNVector4(0, 1, 0, .pi*(-0.5)*Float(angleMultiplyer))
+
+        if isMoonStopped == .MOVE {
+            rotateMoon(rotation: .pi*0.5,planet: moonRing, duration: 1)}
+        moonRing.rotation = SCNVector4(0, 1, 0, .pi*(-0.5)*Float(earthRotating-1) + .pi*(-0.5)*Float(angleMultiplyer))
+        
+    
         moonRing.addChildNode(moon)
 
         // Earth intial
-        let earthRing = createRing(ringSize: 0.7)
+        let earthRing = createRing(ringSize: 0.6)
         let earth = createPlanet(radius: 0.1, image: "earth")
         earth.name = "Earth"
-        earth.position = SCNVector3(x:0.7, y: 0, z: 0)
+        earth.position = SCNVector3(x:0.6, y: 0, z: 0)
+        earth.rotation = SCNVector4(0, 1, 0, .pi*(0.5)*Float(earthRotating-1))
+        // person initial
+        let material = SCNMaterial()
+        material.diffuse.contents = UIColor(.white)
         
-       // rotateMoon(rotation: .pi*0.5,planet: earth, duration: 1)
-        //rotateMoon(rotation: .pi*(-0.5),planet: moonRing, duration: 1)
+        let person = SCNSphere(radius: 0.01)
+        let personBody = SCNSphere(radius: 0.02)
 
+        person.materials = [material]
+        personBody.materials = [material]
+        
+        let personNode = SCNNode(geometry:person)
+        let personBodyNode = SCNNode(geometry:personBody)
+
+        personNode.name = "Person"
+        personNode.position = SCNVector3(x:-0.12, y: 0, z: 0)
+        personBodyNode.name = "PersonBody"
+        personBodyNode.position = SCNVector3(x:-0.09, y: 0, z: 0)
+        earth.addChildNode(personBodyNode)
+        earth.addChildNode(personNode)
         earth.addChildNode(moonRing)
 
+        if isMoonStopped == .STOP{
+            
+            rotateMoon(rotation: .pi*(0.5),planet: personNode, duration: 1)
+            moonRing.rotation = SCNVector4(0, 1, 0, .pi*(-0.5)*Float(earthRotating-1) + .pi*(-0.5)*Float(angleMultiplyer-1))
+
+        } else{
+            earth.childNodes[0].removeFromParentNode()
+            earth.childNodes[0].removeFromParentNode()
+            
+            if isMoonStopped == .EXTRA {
+                moonRing.rotation = SCNVector4(0, 1, 0, .pi*(-0.5)*Float(earthRotating-1) + .pi*(-0.5)*Float(angleMultiplyer-1))
+            }
+
+        }
+        
         earthRing.addChildNode(earth)
 
      
@@ -72,9 +108,10 @@ struct SceneKitView: UIViewRepresentable {
     
   func makeUIView(context: UIViewRepresentableContext<SceneKitView>) -> SCNView {
       
-      baseSetting(angleMultiplyer: angleMultiplyer)
+     // baseSetting(angleMultiplyer: angleMultiplyer, earthRotating: earthRotating)
     
     sceneView.scene = SCNScene()
+      sceneView.scene?.background.contents = UIColor.black
       sceneView.allowsCameraControl = true
     sceneView.autoenablesDefaultLighting = true
     sceneView.scene?.rootNode.addChildNode(baseNode)
@@ -83,17 +120,16 @@ struct SceneKitView: UIViewRepresentable {
 
   func updateUIView(_ sceneView: SCNView, context: UIViewRepresentableContext<SceneKitView>) {
     print("Updating view \(angleMultiplyer)")
-      
-      print("baseNode \(baseNode.childNodes.count)")
-   
+         
+      sceneView.scene?.rootNode.childNodes[0].enumerateChildNodes({ node, stop in
+          node.removeFromParentNode()
+      })
 
     // To go to a fixed angleMultiplyer state
     //let rotation = SCNAction.rotate(toAxisAngle: SCNVector4(1, 0, 0, angle.radians), duration: 3)
-      baseSetting(angleMultiplyer: angleMultiplyer)
-      print("da")
-      sceneView.scene?.rootNode.removeAllAnimations()
+      baseSetting(angleMultiplyer: angleMultiplyer, earthRotating: earthRotating)
+      
       sceneView.scene?.rootNode.childNodes[0].removeFromParentNode()
-
       sceneView.scene?.rootNode.addChildNode(baseNode)
  
 
@@ -106,7 +142,9 @@ struct SceneKitView: UIViewRepresentable {
         let planet = SCNSphere(radius: CGFloat(radius))
         let material = SCNMaterial()
         material.diffuse.contents = UIImage(named: "\(image).jpg")
-        planet.materials = [material]
+        let material2 = SCNMaterial()
+        material2.diffuse.contents = UIColor(.white)
+        planet.materials = [material,material2]
     
         let planetNode = SCNNode(geometry: planet)
         
