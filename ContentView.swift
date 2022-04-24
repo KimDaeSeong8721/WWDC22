@@ -39,7 +39,6 @@ struct ContentView: View {
     
     init(){
         UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: UIColor.white]
-
     }
     var body: some View {
         
@@ -92,10 +91,6 @@ struct ContentView: View {
                     }
                     .foregroundColor(.white)
 
-//                    Image(systemName: "globe.europe.africa.fill")
-//                        .resizable()
-//                        .frame(width: 50, height: 50)
-//                        .foregroundColor(.white)
                 }
                 
                     // Moon Move
@@ -126,15 +121,7 @@ struct ContentView: View {
                         Image(systemName: "moon.circle.fill")
                     }
                     .foregroundColor(.white)
-
-                    
-//                    Image(systemName: "moon.circle.fill")
-//                        .resizable()
-//                        .frame(width: 50, height: 50)
-//                        .foregroundColor(.white)
-                    
-                  
-                    
+                 
                 }
                 
             }
@@ -146,7 +133,9 @@ struct ContentView: View {
                 }
                 .onTapGesture {
                     isGraduationTapped.toggle()
+                    if isMoonStopped == .MOVE {
                     isMoonStopped = .EXTRA
+                    }
                 }
                 .foregroundColor(.white)
                 .padding(.vertical)
@@ -173,8 +162,9 @@ struct ContentView: View {
                         
                         if isMusicOn {
                             playSound()
+                            if isMoonStopped == .MOVE {
                             isMoonStopped = .EXTRA
-                        } else{
+                            }                        } else{
                             player?.stop()
                         }
                     } label: {
@@ -186,19 +176,13 @@ struct ContentView: View {
             // 지구 태양 달
             
             VStack {
-                    
-              //  Slider(value: $progress, in: -0.2...1, step: 0.01)
-               // Slider(value: $windCount, in: 1 ... 10, step : 1)
-                
-                
+      
                 GeometryReader{ proxy in
                     
                     let size = proxy.size
                     
                     ZStack{
-                        
-                        
-                            
+                
                         WaterWave(progress: $progress, waveHeight: 0.1, offset: startAnimation)
                             .fill(Color.blue)
                         
@@ -221,6 +205,7 @@ struct ContentView: View {
           
             
         }.navigationViewStyle(.columns)
+            
         
     }
     

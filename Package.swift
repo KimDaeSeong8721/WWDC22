@@ -8,13 +8,13 @@ import PackageDescription
 import AppleProductTypes
 
 let package = Package(
-    name: "TidalWaveTea",
+    name: "TidesDiff",
     platforms: [
         .iOS("15.2")
     ],
     products: [
         .iOSApplication(
-            name: "TidalWaveTea",
+            name: "TidesDiff",
             targets: ["AppModule"],
             bundleIdentifier: "com.DSCompany.TidalWaveTea",
             teamIdentifier: "J85NQ6YL4V",

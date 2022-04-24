@@ -7,6 +7,11 @@
 		<key>TidalWaveTea.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
+			<integer>1</integer>
+		</dict>
+		<key>TidesDiff.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
 			<integer>0</integer>
 		</dict>
 	</dict>
@@ -18,6 +23,11 @@
 			<true/>
 		</dict>
 		<key>TidalWaveTea</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>TidesDiff</key>
 		<dict>
 			<key>primary</key>
 			<true/>
