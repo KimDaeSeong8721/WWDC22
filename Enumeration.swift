@@ -15,3 +15,10 @@ enum IsMoonStopped {
     case STOP
     case EXTRA
 }
+
+enum AbsoluteDirec : Int {
+    case WEST = 1
+    case SOUTH = 2
+    case EAST = 3
+    case NORTH = 4
+}
