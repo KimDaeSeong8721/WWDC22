@@ -23,4 +23,5 @@ And to make it simple, I set up some assumptions.
 3. Tap the scale icon to display the scale, and you can determine the approximate height.
 4. The sound of the sea is embodied.
 5. Using Scenekit, the relative positions of the sun, earth, and moon were implemented as 3D images, and white spheres were overlapped to make human forms.
+
 ![IMG_0439](https://user-images.githubusercontent.com/69894461/171026517-de969237-fd26-4bc6-95c6-0d1af6ff9226.jpg)
