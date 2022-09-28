@@ -1,8 +1,8 @@
 # WWDC22
 
-## 🍎 WWDC 2021 Swift Student Challenge Winner 🎉
+## 🍎 WWDC 2022 Swift Student Challenge Winner 🎉
 
-##Difference between high tide and low tide
+## Difference between high tide and low tide
 
 Before we start, please play it on the horizontal screen.
 
@@ -12,13 +12,13 @@ by the moon and the tide-generating force by the sun are added.
 On the other hand, when the positions of the sun and the moon are placed vertically on the earth's basis, the difference between the tides is the smallest. This is because the tidal force by the moon affects high tide and the tidal force by the sun generally affects low tide.
 And to make it simple, I set up some assumptions.
 
-##assumptions
+### assumptions
 
 1. The person at the equator set the standard and caused high tide and low tide to occur twice a day.
 2. It is assumed that the former is lower in this app, although the low tide is often higher when the moon is the first quarter moon or the last quarter moon than the low tide when the moon is the months or the full moon.
 3. The relative size and location of the sun, earth, and moon were roughly set.
 
-##Function
+### Function
 
 1. Press the Earth icon button to rotate the Earth and change the height of the sea level, the background of the sky, and the time.
 2. If you press the moon icon button, the moon revolves around the Earth, and the height of the sea level in a high tide situation, and the shape of the moon seen from the Earth, change.
